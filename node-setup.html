@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deployment Guide</title>
+
+  <style>
+    #mainContent {
+      max-height: 90vh;
+    }
+    .custom-pre {
+      color: #d63384;
+      background-color: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 5px;
+      overflow-x: auto;
+      padding: 0.5rem;
+    }
+    .responsive-image {
+      max-width: 100%;
+      height: auto;
+    }
+    .note {
+      font-style: italic;
+      padding-left: 1rem;
+      color: grey;
+    }
+  </style>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <!-- Bootstrap icon CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" integrity="sha384-Ay26V7L8bsJTsX9Sxclnvsn+hkdiwRnrjZJXqKmkIDobPgIIWBOVguEcQQLDuhfN" crossorigin="anonymous">
+  <!-- font-awesome CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
+  <!-- Add Magnific Popup CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" integrity="sha384-28LxBI7W+Dapb3A8MTRqxV66gb9JlWbIxDXjyt625fYrMXiooed501as+WMytlba" crossorigin="anonymous">
+  <!-- Add jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <!-- Add Magnific Popup JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js" integrity="sha384-fexNtx3nPE3sjIQuGk8G2X8X/aSEBVMC58R839hkgsY/Xjhvkm7m2otGhwrdESWj" crossorigin="anonymous"></script>
+
+  <script>
+    $(document).ready(function() {
+      $('.magnific').magnificPopup({
+        type: 'image'
+      });
+    });
+  </script>
+
+</head>
+
+<body>
+<div class="container-fluid d-flex flex-column vh-100">
+  <!-- Upper Section: Navbar -->
+  <div class="row">
+    <div class="col-12"> <!-- Added this column to contain the navbar -->
+      <header class="navbar navbar-default align-items-center bg-body-tertiary">
+        <button class="btn btn-light mr-3" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar">
+          <i class="fas fa-bars"></i>
+        </button>
+        <a class="navbar-brand" href="#">CPSC304: Guide for Node.js/Oracle</a>
+      </header>
+    </div>
+  </div>
+
+  <div class="row flex-grow-1 flex-nowrap">
+
+    <!-- Lower Left Section: sidebar -->
+    <div class="col-auto px-0">
+      <div id="sidebar" class="collapse collapse-horizontal show">
+        <div class="p-3" style="font-size: 0.9em;">
+          <nav class="h-100 flex-column align-items-stretch pe-4 border-end">
+            <nav class="nav nav-pills flex-column">
+              <a href="#introduction" class="nav-link px-0">
+                <span class="ms-1">Introduction</span>
+              </a>
+              <nav class="nav nav-pills flex-column">
+                <a href="#ddl-dml-item" class="nav-link ms-3">
+                  <span class="ms-1">DDL/DML</span>
+                </a>
+                <a href="#data-consistency-item" class="nav-link ms-3">
+                  <span class="ms-1">Data Consistency</span>
+                </a>
+                <a href="#client-server-item" class="nav-link ms-3">
+                  <span class="ms-1">Client-Server</span>
+                </a>
+                <a href="#architecture-item" class="nav-link ms-3">
+                  <span class="ms-1">3-tier architecture</span>
+                </a>
+                <a href="#port-item" class="nav-link ms-3">
+                  <span class="ms-1">Port Number</span>
+                </a>
+                <a href="#ssh-tunnel-item" class="nav-link ms-3">
+                  <span class="ms-1">SSH Tunneling</span>
+                </a>
+              </nav>
+              <a href="#choice-of-ide" class="nav-link px-0">
+                <span class="ms-1">Choice of IDE</span>
+              </a>
+              <a href="#setup-sample-project" class="nav-link px-0">
+                <span class="ms-1">Set up Sample Project</span>
+              </a>
+              <nav class="nav nav-pills flex-column">
+                <a href="#remote-deploy-item" class="nav-link ms-3">
+                  <span class="ms-1">Deploy on the ugrad server</span>
+                </a>
+                <a href="#local-deploy-item" class="nav-link ms-3">
+                  <span class="ms-1">Deploy locally</span>
+                </a>
+              </nav>
+              <a href="#code-logic-explanation" class="nav-link px-0">
+                <span class="ms-1">Code Logic Explanation</span>
+              </a>
+              <a href="#debugging" class="nav-link px-0">
+                <span class="ms-1">Debugging</span>
+              </a>
+            </nav>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lower Right Section: Main Content -->
+    <div class="col ps-md-2 pt-2 flex-grow-1 overflow-auto" id="mainContent">
+      <div id="introduction" class="container mt-5">
+        <h1>Welcome</h1>
+        <p>to the supporting material for the 304 sample project, centered on the Node.js/Oracle tech stack. Using our sample project as a reference, this guide offers insights into creating your own project from scratch or building upon the provided sample. Through this, you'll gain a deeper understanding of how to construct a web application that interfaces with relational databases using Node.js. </p>
+
+        <div id="basic-concepts" class="alert alert-info">
+          <p class="mt-1"><i class="bi bi-info-circle-fill"></i> Before we start, let's ensure we're all on the same page with some basic concepts: </p>
+          <div class="accordion" id="accordionBasic">
+            <div id="ddl-dml-item" class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ddl-dml" aria-expanded="false" aria-controls="ddl-dml">
+                  Database DDL and DML
+                </button>
+              </h2>
+              <div id="ddl-dml" class="accordion-collapse collapse" data-bs-parent="#accordionBasic">
+                <div class="accordion-body">
+                  There are two main categories of database queries: DDL and DML. DDL, or Data Definition Language, deals with defining and altering the structure of your database tables or the overall schema of your databases. This includes operations like creating, altering, and deleting tables. DML, or Data Manipulation Language, involves manipulating the data within the tables. This encompasses operations such as inserting, deleting, selecting, and updating records. <br>
+                  Just like code, these queries must be executed to take effect.
+                </div>
+              </div>
+            </div>
+            <div id="data-consistency-item" class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#data-consistency" aria-expanded="false" aria-controls="data-consistency">
+                  Data Consistency Among the Group
+                </button>
+              </h2>
+              <div id="data-consistency" class="accordion-collapse collapse" data-bs-parent="#accordionBasic">
+                <div class="accordion-body">
+                  In our database system, each student has their own personal database space, separate from others. Think of this as your private area within the larger database, where you can create, modify, and delete tables and data without affecting anyone else. When you access the database with your unique username and password, you're directed to your personal database space. <br>
+                  To ensure that you're working with the same set of data throughout your project, you have two options:
+                  <ol>
+                    <li>Use the same username and password credentials to access the same database space consistently.</li>
+                    <li>Run the same reset SQL script among your group to repeat the (drop-create-insert) process and ensure everyone is working with identical data.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+            <div id="client-server-item" class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#client-server" aria-expanded="false" aria-controls="client-server">
+                  Client-Server
+                </button>
+              </h2>
+              <div id="client-server" class="accordion-collapse collapse" data-bs-parent="#accordionBasic">
+                <div class="accordion-body">
+                  The client-server model describes the interaction between two computer programs in which one program, the client, makes a service request from another program, the server, which fulfills the request. For example, when you search on Google, your browser (the client) requests data from Google's machines (the server).
+                </div>
+              </div>
+            </div>
+            <div id="architecture-item" class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#architecture" aria-expanded="false" aria-controls="architecture">
+                  Frontend-Backend-Database (3-tier architecture)
+                </button>
+              </h2>
+              <div id="architecture" class="accordion-collapse collapse" data-bs-parent="#accordionBasic">
+                <div class="accordion-body">
+                  In the context of software/web applications, we often talk about the frontend and the backend. The frontend is the visual and interactive aspect of an application, like the design and buttons on a website. Meanwhile, the backend, often residing on a server, processes requests, interacts with the database, and applies business logic.
+                </div>
+              </div>
+            </div>
+            <div id="process-item" class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#process" aria-expanded="false" aria-controls="process">
+                  Client-Server Interaction in a 3-Tier Approach
+                </button>
+              </h2>
+              <div id="process" class="accordion-collapse collapse" data-bs-parent="#accordionBasic">
+                <div class="accordion-body">
+                  In the client-server communication, the client retrieves data input by a user on the frontend and sends it as part of a request to the backend. The backend processes this request, performing logical operations and potentially manipulating data in the database. The processed data is then sent back to the frontend as a response, where it's rendered using frontend logic and code to be displayed to the user.
+                  <p class="mt-1">For example, consider an online shopping website. When you browse products, view images, and hover over buttons, you are interacting with the <strong>frontend</strong>, which runs on your device (<strong>the client</strong>). Once the final place-the-order button has been clicked, your device sends a <strong>request</strong> to the <strong>server</strong>. The server, which houses the <strong>backend</strong>, then checks inventory from their database, processes payment, and updates the <strong>database</strong> with your order details. Once these operations are completed, the server sends a <strong>response</strong> back to the client. Your device (the client) then displays this information on the <strong>frontend</strong>, possibly showing you a thank-you message. In this scenario, the frontend provides the user experience, while the backend ensures the operations are executed correctly, and the client-server model facilitates the communication between your device and the online shopping website's infrastructure.</p>
+                </div>
+              </div>
+            </div>
+            <div id="port-item" class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#port" aria-expanded="false" aria-controls="port">
+                  Port Number
+                </button>
+              </h2>
+              <div id="port" class="accordion-collapse collapse" data-bs-parent="#accordionBasic">
+                <div class="accordion-body">
+                  In network computing, a port is a specific endpoint for sending or receiving data on a computer. Just like an address tells you where someone lives in a city, a port number specifies where to deliver or receive data for a particular service on a computer. For instance, when you visit a website, your computer usually communicates using port numbers 80 (for HTTP) or 443 (for HTTPS).
+                </div>
+              </div>
+            </div>
+            <div id="ssh-tunnel-item" class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ssh-tunnel" aria-expanded="false" aria-controls="ssh-tunnel">
+                  SSH Tunneling
+                </button>
+              </h2>
+              <div id="ssh-tunnel" class="accordion-collapse collapse" data-bs-parent="#accordionBasic">
+                <div class="accordion-body">
+                  SSH tunneling, also known as SSH port forwarding, is a method that securely forwards traffic between network ports. When a service on a server isn't directly reachable, setting up an SSH tunnel allows you to create a secure, encrypted connection between a local port and the remote service port. This lets you interact seamlessly with the remote service, as if it were available on a local port of your own machine.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <h3 id="sample-project" class="mt-3">Tech Stack</h3>
+        <p>For this sample project, our primary language is  <a class="btn btn-sm btn-outline-info" data-bs-toggle="collapse" href="#javascript" role="button" aria-expanded="false" aria-controls="javascript">JavaScript</a>.</p>
+        <div class="collapse mb-3" id="javascript">
+          <div class="card card-body">
+            <strong>JavaScript:</strong> JavaScript is a dynamic programming language that's primarily used for enhancing interactivity within web browsers. It's the scripting language that browsers understand and can interpret. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide" target="_blank">More about JavaScript</a>
+          </div>
+        </div>
+
+        <p>On the backend, we'll be using <a class="btn btn-sm btn-outline-info" data-bs-toggle="collapse" href="#nodejs" role="button" aria-expanded="false" aria-controls="nodejs">Node.js</a> with <a class="btn btn-sm btn-outline-info" data-bs-toggle="collapse" href="#express" role="button" aria-expanded="false" aria-controls="express">Express</a> framework and the <a class="btn btn-sm btn-outline-info" data-bs-toggle="collapse" href="#oracledb" role="button" aria-expanded="false" aria-controls="oracledb">oracledb</a> module. We also use the <a class="btn btn-sm btn-outline-info" data-bs-toggle="collapse" href="#dotenv" role="button" aria-expanded="false" aria-controls="dotenv">dotenv</a> module to enhance security practices.</p>
+        <div class="collapse mb-3" id="nodejs">
+          <div class="card card-body">
+            <strong>Node.js:</strong> Node.js is a runtime environment that enables JavaScript to run on the server-side, extending its use beyond web browsers. When we talk about using JavaScript on the backend, we often refer to it directly as "Node.js". <a href="https://nodejs.org/en/docs/guides/" target="_blank">More about Node.js</a>
+          </div>
+        </div>
+        <div class="collapse mb-3" id="express">
+          <div class="card card-body">
+            <strong>Express.js:</strong> Express.js is a framework for Node.js, simplifying the process of building web applications and APIs. <a href="https://expressjs.com/" target="_blank">More about Express.js</a>
+          </div>
+        </div>
+        <div class="collapse mb-3" id="oracledb">
+          <div class="card card-body">
+            <strong>oracledb:</strong> The oracledb module is a Node.js driver for Oracle Database. It allows Node.js applications to connect to Oracle Database and execute SQL and PL/SQL statements. <a href="https://oracle.github.io/node-oracledb/" target="_blank">More about oracledb</a>
+          </div>
+        </div>
+        <div class="collapse mb-3" id="dotenv">
+          <div class="card card-body">
+            <strong>dotenv:</strong> The dotenv Node.js module allows us to load environment variables from a <code>.env</code> file into <code>process.env</code> object in the format of key-value pairs. This helps in managing and securing sensitive information like database credentials in a Node.js application. <a href="https://github.com/motdotla/dotenv" target="_blank">More about dotenv</a>
+          </div>
+        </div>
+
+        <p>On the frontend, we'll keep things simple with a static webpage comprised of an <a class="btn btn-sm btn-outline-info" data-bs-toggle="collapse" href="#html" role="button" aria-expanded="false" aria-controls="html">HTML</a> file and a JavaScript file (We also provide an optional <a class="btn btn-sm btn-outline-info" data-bs-toggle="collapse" href="#css" role="button" aria-expanded="false" aria-controls="css">CSS</a> file, you can choose to use it or craft your own if you want to style your webpage further!). This approach ensures we don't delve deep into complex software or web application development, as our focus is on the database aspect.</p>
+        <div class="collapse mb-3" id="html">
+          <div class="card card-body">
+            <strong>HTML:</strong> HTML (HyperText Markup Language) is the standard language for creating web pages. It uses tags to structure content on the web page. <a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank">More about HTML</a>
+          </div>
+        </div>
+        <div class="collapse mb-3" id="css">
+          <div class="card card-body">
+            <strong>CSS:</strong> CSS (Cascading Style Sheets) is a stylesheet language used for describing the look and formatting of a document written in HTML. It's used to control the layout of multiple web pages all at once, including aspects like layout, colors, and fonts. <a href="https://developer.mozilla.org/en-US/docs/Web/CSS" target="_blank">More about CSS</a>
+          </div>
+        </div>
+
+        <p>We hope this sample project, might serve as a skeleton, will help reduce your coding workload and allow you to concentrate more on designing a robust DB schema and crafting intricate queries!</p>
+
+        <h4 id="next-steps">Next Steps</h4>
+        <p>In the following sections, we'll guide you through setting up the sample project, deploying it on our remote server or your local computer, and understanding the code logic for one of the functionalities from end-to-end. We'll also provide you with some ideas on choosing an IDE and debugging your project. Let's get started!</p>
+
+        <br><hr>
+
+        <div id="choice-of-ide" class="mt-5">
+          <h2>Choice of IDE</h2>
+          <p>You're free to use ANY IDE of your choice. Both IntelliJ and Visual Studio Code, which you may have used in CPSC210 and CPSC221, are good choices. Other IDEs, such as WebStorm, Atom, and Eclipse, are also very suitable options. If you have a specific preference or just need something lighter, basic code editors like SublimeText or Notepad++ can also be used!</p>
+        </div>
+
+        <br><hr>
+
+        <div id="setup-sample-project" class="mt-5">
+          <h2>Set up Sample Project</h2>
+          <p> Download the zip file <a href="node-demo.zip" download>here</a> and unzip it. </p>
+
+          <p>We've set up a Node.js environment for you on our remote ugrad server. Essential packages, such as express and oracledb, are pre-installed. We've also configured the references to these packages in the startup script for your runtime. If you prefer, you can set up an environment on your local machine, <span class="bg-warning">especially if you wish to use additional packages</span>.</p>
+
+          <div id="cautions" class="alert alert-danger mt-3">
+            <h5 class="alert-heading"><i class="bi bi-exclamation-triangle-fill"></i> CAUTION!</h5>
+            <p>Exercise caution when renaming files in this project. Only make changes if you're certain about all explicit and implicit dependencies linked to them.</p>
+            <p>Specifically, avoid renaming the following files:</p>
+            <ul>
+              <li><strong><code>server.js</code></strong></li>
+              <li><strong><code>.env</code></strong></li>
+            </ul>
+          </div>
+
+
+          <h4>Deployment Options:</h4>
+          <p>Follow the <u>underlined</u> steps <strong>every time</strong> you start the application. The steps without underlining only need to be done once, given that you don't make any changes to the correlated areas later.</p>
+          <ol style="list-style:none;">
+            <div class="accordion" id="accordionDeployment">
+              <div id="remote-deploy-item" class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#remote-deploy" aria-expanded="true" aria-controls="remote-deploy">
+                    <strong>Deploy on the ugrad server</strong>
+                  </button>
+                </h2>
+                <div id="remote-deploy" class="accordion-collapse collapse show" data-bs-parent="#accordionDeployment">
+                  <div class="accordion-body">
+                    <figure class="figure">
+                      <figcaption class="figure-caption">Infrastructure Overview: Deploy remotely </figcaption>
+                      <img src="./images/communication-remote.png" class="figure-img img-fluid rounded" alt="Infrastructure Overview: Deploy remotely">
+                    </figure>
+                    <ul>
+                      <li><p><strong> Change database credential: </strong></p>
+                        Open the .env file, adjust the database username and password based on the placeholder to configure the sample project to your own Oracle database.
+                      </li><br>
+                      <li><p><strong> Deploy the sample project: </strong></p>
+                        <ul>
+                          <li>Transfer the unzipped folder to the remote server using the command below. Ensure you're in a parent directory of the unzipped folder. <br>
+                            You can also use other file transfer tools like Cyberduck.
+                            <pre class="custom-pre">scp -r &lt;location of the project folder&gt; YOUR-CWL-ID@remote.students.cs.ubc.ca:&lt;destination on the server&gt;</pre>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <p><strong><u>Starting the Sample Project:</u></strong></p>
+                        <ul>
+                          <li>
+                            SSH into the remote server:
+                            <pre class="custom-pre">ssh YOUR-CWL-ID@remote.students.cs.ubc.ca</pre>
+                          </li>
+                          <li>Navigate to the remote directory of the sample project.</li>
+                          <li>
+                            Run the project's start script:
+                            <p>This script is essential for starting the project on the remote server, as it includes important configurations for the node runtime environment.</p>
+                            <pre class="custom-pre">sh ./remote-start.sh</pre>
+                            <p>After running the script, you should see a message in the terminal similar to: <code>Server running at http://localhost:<strong>&lt;node starting port number&gt;</strong>/</code>. Note down the <code>&lt;node starting port number&gt;</code>.</p>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <p><strong><u>Building an SSH Tunnel to the Remote Node Application:</u></strong></p>
+                        <p class="note">Sometimes, IDEs like Visual Studio Code can automatically handle port forwarding for you when you start the application remotely within their built-in SSH connection session. In such cases, you don't need to perform this step manually and you can directly access your application on that port</p>
+                        <img src="./images/vscode-port-forwarding.png" class="img-fluid" alt="vscode-port-forwarding" style="height: 40%; width: 40%; margin-left: auto; margin-right: auto; display: block;">
+                        <p>We've provided a script to facilitate the SSH tunnel creation to the remote node application:</p>
+                        <ul>
+                          <li>Open a new terminal in your local project folder.</li>
+                          <li>
+                            Depending on your operating system:
+                            <ul>
+                              <li>Mac users:
+                                <pre class="custom-pre">sh ./scripts/mac/server-tunnel.sh</pre>
+                              </li>
+                              <li>Windows users:
+                                <pre class="custom-pre">.\scripts\win\server-tunnel.cmd</pre>
+                              </li>
+                            </ul>
+                          </li>
+                          <li>Follow the instructions in the terminal. You'll need to enter the <code>node starting port number</code> you noted earlier. The subsequent steps resemble the process of starting an SSH connection to the ugrad server.</li><br>
+                        </ul>
+                      </li>
+                      <li>
+                        <p><strong><u>Accessing the Sample Project:</u></strong></p>
+                        <p>
+                          After you've input your node's starting port number in the previous step, you should see a message similar to:
+                        <pre class="custom-pre">-------------------------------------------------------------------------- <br>        You will be able to access your application at: <br>        http://localhost:&lt;Local Accessing Port Number&gt; <br>        after completing the steps below... <br>--------------------------------------------------------------------------</pre>
+                        At this point, you can access the sample project via the provided URL.
+                        </p>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div id="local-deploy-item" class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#local-deploy" aria-expanded="false" aria-controls="local-deploy">
+                    <strong>Deploy on your local environment</strong> (Teaching group is not guaranteed to provide additional help with local set up)
+                  </button>
+                </h2>
+                <div id="local-deploy" class="accordion-collapse collapse" data-bs-parent="#accordionDeployment">
+                  <div class="accordion-body">
+                    <figure class="figure">
+                      <figcaption class="figure-caption">Infrastructure Overview: Deploy locally </figcaption>
+                      <img src="./images/communication-local.png" class="figure-img img-fluid rounded" alt="Infrastructure Overview: Deploy locally">
+                    </figure>
+                    <ul>
+                      <li> <p>If you prefer running your code locally, follow the below steps:</p>
+                        <ul>
+                          <li><p><strong> Install Node.js:</strong></p>
+                            refer to its <a href="https://nodejs.org/en" target="_blank">official website</a> for more details
+                          </li>
+                          <li><p><strong> Change database credential: </strong></p>
+                            Open the .env file, adjust the database username and password based on the placeholder to configure the sample project to your own Oracle database.
+                          </li><br>
+                          <li>
+                            <p><strong><u>Set up SSH tunneling to connect to your Oracle database:</u></strong></p>
+                            <p>We have provided a script to automate the process of setting up the tunnel. Please follow these steps:</p>
+                            <ol>
+                              <li>
+                                Open a new terminal or command prompt window and navigate to the project's folder.
+                              </li>
+                              <li>
+                                Depending on your operating system, run the appropriate command:
+                                <ul>
+                                  <li>Mac users:
+                                    <pre class="custom-pre">sh ./scripts/mac/db-tunnel.sh</pre>
+                                  </li>
+                                  <li>Windows users:
+                                    <pre class="custom-pre">.\scripts\win\db-tunnel.cmd</pre>
+                                  </li>
+                                </ul>
+                              </li>
+                              <li>
+                                <p>After running the command, enter your CWL password when prompted. The subsequent steps will resemble the process of starting an SSH connection to the ugrad server. This also opens a command line on the remote server and has a timeout similar to an SSH connection.</p>
+                              </li>
+                            </ol>
+                          </li>
+                          <li><p><strong>Install the required packages:</strong><u> (Repeat this step if you/your teammates add more packages to the project through implementation) </u></p>
+                            <ul>
+                              <li><p>After installing Node.js, verify its installation by running:</p>
+                                <pre class="custom-pre">node --version</pre>
+                              </li>
+                              <li><p>Navigate your terminal to the project folder and run: <br>
+                                <pre class="custom-pre">npm install</pre>
+                                This installs the required packages for the project. If you add new packages during development, run this command again to ensure those modules are added to your runtime library before starting the application.
+                                </p>
+                              </li>
+                            </ul>
+                          </li>
+                          <li><p><strong>Oracle Instant Client Installation and Configuration:</strong></p>
+                            To connect to the Oracle database using the oracleDB module, we need to install the Oracle Instant Client and set its path as an environment variable, which our application can reference during runtime.                            <ol>
+                              <li><strong>Download the Oracle Instant Client: </strong><br>
+                                Click the provided link to directly download the basic light version zip files. Alternatively, if you're using a different machine or prefer the basic version, visit <a href="https://www.oracle.com/database/technologies/instant-client/downloads.html" target="_blank">Oracle Instant Client Downloads</a> page.
+                                <ul>
+                                  <li>For Mac (Intel x86) users: <a href="https://download.oracle.com/otn_software/mac/instantclient/198000/instantclient-basiclite-macos.x64-19.8.0.0.0dbru.zip" download>Basic Light Package (ZIP)</a></li>
+                                  <li>For Windows (x64) users: <a href="https://download.oracle.com/otn_software/nt/instantclient/1920000/instantclient-basiclite-windows.x64-19.20.0.0.0dbru.zip" download>Basic Light Package (ZIP)</a></li>
+                                </ul>
+                              </li>
+                              <li><strong>Install Oracle Instant Client:</strong><br>
+                                Unzip the downloaded file to a directory of your choice.
+                              </li>
+                              <li><strong>Get the absolute path:</strong><br>
+                                <ul>
+                                  <li>Open a Terminal or Command Prompt and navigate into the unzipped folder of the Oracle Instant Client.</li>
+                                  <ul>
+                                    <li>Mac users: Type <code>pwd</code> and press Enter to get the absolute path.</li>
+                                    <li>Windows users: Type <code>cd</code> and press Enter to get the absolute path.</li>
+                                  </ul>
+                                </ul>
+                                Please copy the absolute path and save it somewhere accessible, as we'll need it in the next step.
+                              </li>
+                              <li><strong>Set the environment variable for your startup process: </strong><br>
+                                We've created scripts to help streamline the environment variable setup and application startup process.
+                                <ul>
+                                  <li>Mac users: Run <pre class="custom-pre">sh ./scripts/mac/instantclient-setup.sh</pre> in the Command Prompt in your project folder.</li>
+                                  <li>Windows users: Run <pre class="custom-pre">.\scripts\win\instantclient-setup.cmd</pre> in the Terminal in your project folder.</li>
+                                </ul>
+                                <p>You will need to <span class="bg-warning">copy the absolute path of the Oracle Instant Client</span>, which you obtained in the previous step, into the command line. This will help generate a script named <code>local-start.sh</code> for Mac users and <code>local-start.cmd</code> for Windows users. These scripts include setting up the Oracle environment variables before actually starting the Node application.</p>
+                              </li>
+                            </ol>
+                          </li>
+                          <li><strong><u>Start the sample project locally:</u></strong>
+                            <p>If you successfully ran the command in the previous step, you should see a message in the terminal similar to:
+                            <pre class="custom-pre">--------------------------------------------------------------------------<br>Setup complete. Run 'sh local-start.sh'/'local-start.cmd' in your project folder to start your Node.js application.<br>--------------------------------------------------------------------------</pre>
+                            You can run the corresponding script to start the sample project.</p>
+                          </li>
+                          <li><strong><u>Access the Sample Project:</u></strong>
+                            <p>If you successfully started the application in the previous step, you should see a message in the terminal similar to: <code>Server running at http://localhost:&lt;node starting port number&gt;/</code>. You can access the sample project by entering this URL into your browser.</p>
+                            <p>If you encounter an error message like <code>Error: listen EADDRINUSE: address already in use :::&lt;some port number&gt;</code>, it means the port number specified in the .env file is already in use. In this case, simply change the value in the <code>PORT</code> field in the .env file to a different port number.</p>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ol>
+
+          <br><hr>
+
+          <div id="code-logic-explanation" class="mt-5">
+            <h2>Explanation of the Code Logic for a Functionality, End-to-End</h2>
+            <p>In our sample project, when you aim to build or adjust a functionality, there are typically four key areas where modifications are necessary:</p>
+
+            <h3>Front-end:</h3>
+            <ul>
+              <li><code>index.html</code>: This determines the appearance and information tagging on the web page.</li>
+              <li><code>scripts.js</code>: This handles frontend data parsing and rendering logic.</li>
+            </ul>
+
+            <h3>Back-end:</h3>
+            <ul>
+              <li><code>appController.js</code>: This layer specifies the routes (URLs) to which our backend can respond. Depending on the frontend interaction, different routes will invoke different functions.</li>
+              <li><code>appService.js</code>: This is where the logic for each functionality resides. It's also the layer where we access the database.</li>
+            </ul>
+
+            <figure class="figure">
+              <figcaption class="figure-caption">The end-to-end data flow within our sample project, including interactions between the front-end files, the back-end layers, and the Oracle database.</figcaption>
+              <img src="./images/sample-project-flow-chart.png" class="figure-img img-fluid rounded" alt="Data Flow Diagram of the Sample Project">
+            </figure>
+
+            <h4>Insert Function Example:</h4>
+            <p>Let's take a closer look at the structural logic of our insert function as an example.</p>
+
+            <div class="row">
+              <div class="col-6 mt-1">
+                <p>In our <code>index.html</code> file, the following code snippet represents the frontend section for this functionality. We have two input boxes: a number input with the identifier 'insertId' and a text input with the identifier 'insertName'. Additionally, there's a submit button and a placeholder to display messages.</p>
+              </div>
+              <div class="col-6">
+                <a href="./images/index-insert.png" class="magnific">
+                  <img src="./images/index-insert.png" alt="Code block server for insertion in index.html" class="responsive-image">
+                </a>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-6 mt-1">
+                <p>In the <code>scripts.js</code> file, at the very bottom, we configure the logic associated with each user interaction on our webpage. When crafting your own application, ensure you adjust this configuration accordingly.</p>
+              </div>
+              <div class="col-6">
+                <a href="./images/scripts-insert-onload.png" class="magnific">
+                  <img src="./images/scripts-insert-onload.png" alt="Code block for reacting to insert button in scripts.js" class="responsive-image">
+                </a>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-6 mt-1">
+                <p>The main function for insertion first fetches the user's input data using their respective identifiers, then sends a request to our server with this data. Upon receiving a response, it displays the result message in the <code>index.html</code> file (our GUI).</p>
+                <p class="note">Note that this function also invokes a table rendering function, ensuring our displayed table remains synchronized with our database. While not mandatory in your implementation, maintaining this synchronization is a good practice.</p>
+              </div>
+              <div class="col-6">
+                <a href="./images/scripts-insert.png" class="magnific">
+                  <img src="./images/scripts-insert.png" alt="Code block for insertion's frontend parsing logic before+after talking to the backend" class="responsive-image">
+                </a>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-6 mt-1">
+              <p>Transitioning to the backend, the <code>server.js</code> file serves as the starting point of our backend logic. In this file, we simply route all incoming requests to be handled by the controller, <code>appController.js</code>.</p>
+              </div>
+                <div class="col-6">
+                <a href="./images/server.png" class="magnific">
+                  <img src="./images/server.png" alt="Backend Routing in the server.js File" class="img-fluid centered-image" class="responsive-image">
+                </a>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-6 mt-1">
+                <p >Transitioning to the backend, in the <code>appController.js</code> file, we first extract the values from the request received from the frontend. Next, these values are passed to the service layer for processing. If the operation is successful, a 'true' message is sent back to the frontend; otherwise, a 'false' message is sent. </p>
+                <p class="note">(Sidenote: The format used in our request and response to capture data is called JSON, which stands for 'JavaScript Object Notation'. It's essentially an object notation, allowing you to access values using declared variable names. JSON can be multi-layered, so exercise caution when working with it to avoid potential issues.)</p>
+              </div>
+              <div class="col-6">
+                <a href="./images/controller-insert.png" class="magnific">
+                  <img src="./images/controller-insert.png" alt="Specific POST request handling logic for insertion" class="img-fluid centered-image" class="responsive-image">
+                </a>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-6 mt-1">
+                <p>Finally, we delve into our service layer, <code>appService.js</code>. This section is paramount, especially since we're in a DATABASE COURSE. Here, we communicate directly with our database (in this example, the Oracle database). We utilize a "withOracleDB" helper function to establish and close the database connection. Through a lambda function, we obtain a database connection object, which is then used to execute our query. </p>
+                <p class="note">Note: When making changes to table data (e.g., insert, update, delete), consider including the {autoCommit: true} option to ensure changes are committed to the database. </p>
+                <p> If any errors arise, we simply return 'false' to the controller, indicating an insertion error.</p>
+              </div>
+              <div class="col-6">
+                <a href="./images/service-insert.png" class="magnific">
+                  <img src="./images/service-insert.png" alt="Backend logic for communication with database to do the actual insertion to the database" class="responsive-image">
+                </a>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6 mt-1">
+                <p> Lastly, don't forget to export the function in the <code>appService.js</code> that you want to use in the <code>appController.js</code>. </p>
+              </div>
+              <div class="col-6">
+                <a href="./images/service-insert-export.png" class="magnific">
+                  <img src="./images/service-insert-export.png" alt="Exporting the function so can be use in controller module" class="responsive-image">
+                </a>
+              </div>
+            </div>
+          </div>
+
+
+          <br><hr>
+
+          <div id="debugging" class="mt-5">
+            <h2>Debugging</h2>
+            <p>A typical debugging process can be broken down into four steps:</p>
+            <ol>
+              <li>Locate the Problem</li>
+              <li>Understand the Error</li>
+              <li>Attempt to Resolve the Problem</li>
+              <li>Test the Solution</li>
+            </ol>
+
+            <h3>1. Locate the Problem</h3>
+            <h4>1.1 Broadly Identify the Area</h4>
+            <div class="px-4">
+            <p>First, determine which part of your application is causing the issue. Is it in the front-end, back-end, or the database?</p>
+            <p>A valuable tool for web project debugging is the browser's developer tools. In Google Chrome, you can access it by pressing F12 or by right-clicking on a webpage and selecting 'Inspect' (more information <a href="https://developer.chrome.com/docs/devtools/open/" target="_blank">here</a>). If you're using a different browser, you might need to look up how to access its developer tool.</p>
+              <img alt="devtool anime" src="./images/devtool-anime.gif" style="width: 100%; height: 100%; margin-left: auto; margin-right: auto; display: block;" title="" loading="lazy">
+            <p>Using this tool, you can determine if the issue lies in the front-end or back-end logic. Examine the data received from requests. If the data is correct but rendered incorrectly on the webpage, the issue likely lies in the front-end. If the returned data itself is unexpected, the back-end logic might be at fault.</p>
+              <a href="./images/dev-tool-brief.png" class="magnific d-block mx-auto">
+                <img src="./images/dev-tool-brief.png" alt="Exporting the function so can be used in controller module" class="responsive-image" style="width: 50%; height: auto">
+              </a>
+              <p class="mt-2">Backend errors will typically display messages in the console where your application started. This includes errors like Syntax, Run-Time, and Semantic Errors. However, logical errors won't produce such messages, so they can be trickier to spot and might require a thorough review of your code logic. To see error messages in the console, it's essential that errors are correctly caught and logged. Just as in Java and C++, severe errors might terminate the application.</p>
+            <p>In our sample application, Oracle error messages will also appear in the console, based on our connection helper function's logging logic. While errors during querying generally don't terminate the entire database, you should still exercise caution when performing actions that modify database data.</p>
+            </div>
+            <h4>1.2 Pinpoint the Error to a Specific Line</h4>
+            <div class="px-4">
+            <p>For JavaScript debugging (both front-end and back-end), you can use the standard JavaScript logging function, <code>console.log()</code>. Logs will display in the browser's web console for front-end issues and in the terminal or command prompt for back-end issues. More about <a href="https://developer.mozilla.org/en-US/docs/Web/API/Console/log" target="_blank">console.log()</a>.</p>
+            <p>If you prefer stepping through code and pausing at specific lines:</p>
+            <ul>
+              <li>For the front-end, use the developer tools in your browser. More on this <a href="https://javascript.info/debugging-chrome" target="_blank">here</a>.</li>
+              <li>For back-end debugging, you'll need  <a href="#local-deploy-item">Node.js installed on your computer to run the application locally</a>. Some IDEs, such as IntelliJ Ultimate and Visual Studio Code, offer line-by-line debugging capabilities. Using these IDEs after proper configuration, you can select the 'Run -> Debug' option when your entry point file (e.g., server.js) is open.</li>
+            </ul>
+            </div>
+
+            <h3>2. Understand the Error Message</h3>
+            <p class="px-3">This step can present a myriad of messages! If unsure, consider searching online or on Piazza to see if others have encountered similar issues. Logical errors won't produce explicit error messages, so understanding them often requires a thorough code review and examining your logs.</p>
+
+            <h3>3. Attempt to Resolve the Problem</h3>
+            <p class="px-3">For this step, you'll rely on your understanding and problem-solving skills. By this point, you should have a clearer idea of how to address the issues.</p>
+
+            <h3>4. Test the Solution</h3>
+            <p class="px-3">After making your adjustments, ensure you test the solution to verify that the issue has been resolved.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS, Popper.js, and jQuery -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+
+</body>
+</html>
+
+
+
+
